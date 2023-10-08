@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Data.Leyer.DbContext;
 using Data.Leyer.Models.Structs;
+using Data.Leyer.Models.ViewModels.Category;
 using goolrang_sales_v1.Models;
 using Newtonsoft.Json;
 using System;
@@ -130,7 +131,7 @@ public class CategoryRepository : ICategoryRepository
 
     #region Create
 
-    public async Task<Response<Category>> CreateCategory()
+    public async Task<Response<Category>> CreateCategory(CreateCategoryVm categoryVm )
     {
 
 
@@ -147,7 +148,13 @@ public class CategoryRepository : ICategoryRepository
 
     #region Validation
 
+    public async Task<Response<Category>> ValidateCreateVm( CreateCategoryVm categoryVm)
+    {
 
+
+
+        return new Response<Category>() { };
+    }
     #endregion
 
 
