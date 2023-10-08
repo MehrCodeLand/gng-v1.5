@@ -1,4 +1,5 @@
 ﻿using Data.Leyer.Models.Structs;
+using Data.Leyer.Models.ViewModels.Category;
 using goolrang_sales_v1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -65,6 +66,24 @@ public class CategoryController : ControllerBase
         return Ok(response.Data); 
     }
 
+
+    [HttpPost]
+    [Route("createCategory")]
+    public async Task<IActionResult> CreateCategory( CreateCategoryVm categoryVm )
+    {
+        var response =await _catService.CreateCategory(categoryVm);
+        if(response.ErrorCode < 0)
+        {
+            return NotFound(response.ErrorMessage);
+        }
+
+        // redirect to another action
+        return Ok(response.Message);
+    }
+
+
+    #region TEST
+
     [HttpGet]
     [Route("hello")]
     public async Task<IActionResult> Hello()
@@ -74,6 +93,8 @@ public class CategoryController : ControllerBase
 
         return Ok();
     }
+
+    #endregion
 
 
 

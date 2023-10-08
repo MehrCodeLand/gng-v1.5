@@ -1,4 +1,5 @@
 ﻿using Data.Leyer.Models.Structs;
+using Data.Leyer.Models.ViewModels.Category;
 using goolrang_sales_v1.Models;
 
 namespace Services.Leyer.Services.CategoryServices
@@ -9,5 +10,6 @@ namespace Services.Leyer.Services.CategoryServices
         Task<Response<Category>> GetAllCategory();
         Task<Response<Category>> DeleteCategory(int id);
         Task<Response<Category>> Test_Method();
+        Task<Response<Category>> CreateCategory(CreateCategoryVm categoryVm);
     }
 }

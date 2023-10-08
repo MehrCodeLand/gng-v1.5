@@ -133,12 +133,23 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Response<Category>> CreateCategory(CreateCategoryVm categoryVm )
     {
+        var response = await ValidateCreateVm(categoryVm);
+        if (response.ErrorCode < 0)
+            return response;
 
+
+        var query = $"category_insert_proc @categoryName = {categoryVm.CategoryName.ToLower() } " +
+            $" , @Description = {categoryVm.Description}";
+
+        using (var connection = _dbDapper.CreateConnection())
+        {
+            var result = connection.QueryAsync(query);
+        }
 
 
         return new Response<Category>()
         {
-
+            Message = $"category : {categoryVm.CategoryName.ToLower()} added",
         };
     }
 
@@ -150,10 +161,36 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Response<Category>> ValidateCreateVm( CreateCategoryVm categoryVm)
     {
+        if(categoryVm == null)
+        {
+            return new Response<Category>()
+            {
+                ErrorCode = -125,
+                ErrorMessage = "null data",
+            };
+        }
+        else if(categoryVm.CategoryName == null || categoryVm.CategoryName.Length < 2 )
+        {
+            return new Response<Category>()
+            {
+                ErrorCode = -135,
+                ErrorMessage = "categoryName lenght is to short "
+            };
+        }
+        else if(categoryVm.CategoryName.Length > 30)
+        {
+            return new Response<Category>()
+            {
+                ErrorCode = -145,
+                ErrorMessage = "categoryName lenght is to long "
+            };
+        }
 
 
-
-        return new Response<Category>() { };
+        return new Response<Category>()
+        {
+            Message = "Done"
+        };
     }
     #endregion
 
