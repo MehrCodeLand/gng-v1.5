@@ -23,8 +23,6 @@ public class CategoryController : ControllerBase
 
 
 
-
-
     [HttpDelete]
     [Route("deleteCategoryById/{catId}")]
     public async Task<IActionResult> DeleteCAtegoryById(int catId)
@@ -69,7 +67,7 @@ public class CategoryController : ControllerBase
 
     [HttpPost]
     [Route("createCategory")]
-    public async Task<IActionResult> CreateCategory( CreateCategoryVm categoryVm )
+    public async Task<IActionResult> CreateCategory( [FromBody]CreateCategoryVm categoryVm )
     {
         var response =await _catService.CreateCategory(categoryVm);
         if(response.ErrorCode < 0)
