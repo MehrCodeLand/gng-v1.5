@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Leyer.Models.Structs;
 
-public struct Response<T>
+public struct Responses<T>
 {
     public int ErrorCode { get; set; }
     public string ErrorMessage { get; set; }

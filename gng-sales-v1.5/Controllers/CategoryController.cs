@@ -80,6 +80,20 @@ public class CategoryController : ControllerBase
     }
 
 
+    [HttpPut]
+    [Route("updateCategory")]
+    public async Task<IActionResult> UpdateCategory([FromBody]UpdateCategoryVm categoryVm)
+    {
+        var response = await _catService.UpdateCategory(categoryVm);
+        if(response.ErrorCode < 0)
+        {
+            return NotFound(response.ErrorMessage);
+        }
+
+        return Ok(response.Message);
+    }
+
+
     #region TEST
 
     [HttpGet]

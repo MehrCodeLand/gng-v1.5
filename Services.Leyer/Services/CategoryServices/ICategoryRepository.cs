@@ -6,10 +6,11 @@ namespace Services.Leyer.Services.CategoryServices
 {
     public interface ICategoryRepository
     {
-        Task<Response<Category>> GetCategoryByName(string categoryName = null);
-        Task<Response<Category>> GetAllCategory();
-        Task<Response<Category>> DeleteCategory(int id);
-        Task<Response<Category>> Test_Method();
-        Task<Response<Category>> CreateCategory(CreateCategoryVm categoryVm);
-    }
+        Task<Responses<Category>> GetCategoryByName(string categoryName = null);
+        Task<Responses<Category>> GetAllCategory();
+        Task<Responses<Category>> DeleteCategory(int id);
+        Task<Responses<Category>> Test_Method();
+        Task<Responses<Category>> CreateCategory(CreateCategoryVm categoryVm);
+        Task<Responses<Category>> UpdateCategory(UpdateCategoryVm categoryVm);
+    }   
 }
