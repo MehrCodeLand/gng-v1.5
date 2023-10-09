@@ -168,7 +168,7 @@ public class CategoryRepository : ICategoryRepository
             return response;
 
         var query = $"category_update_proc @categoryId = {categoryVm.Id} ," +
-            $" @categoryName = '{categoryVm.Name}' " +
+            $" @categoryName = '{categoryVm.Name}', " +
             $" @description = '{categoryVm.Description}' ";
 
         using(var connection  = _dbDapper.CreateConnection())
