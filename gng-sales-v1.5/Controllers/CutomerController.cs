@@ -16,6 +16,31 @@ namespace gng_sales_v1._5.Controllers
         }
 
 
+        [HttpGet]
+        [Route("getCustomers")]
+        public async Task<IActionResult> GetCustomers()
+        {
+            var response = await _cutomerService.GetAllCustomer();
+            if (response.ErrorCode < 0)
+                return NotFound("Error "+ response.ErrorMessage );
+
+
+            return Ok(response.Data);
+        }
+
+        [HttpGet]
+        [Route("getCustomerByID/{id}")]
+        public async Task<IActionResult> GetCustomerById(int id)
+        {
+            var response = await _cutomerService.GetUserById(id);
+            if (response.ErrorCode < 0)
+                return NotFound(response.ErrorMessage);
+
+
+
+            return Ok("customer" + response.Data);
+        }
+ 
         [HttpPost]
         [Route("createCutomer")]
         public async Task<IActionResult> GetAllCutomer([FromBody] CreateCustomerVm createCustomerVm )

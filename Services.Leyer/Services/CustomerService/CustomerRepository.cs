@@ -24,10 +24,6 @@ public class CustomerRepository : ICustomerRepository
         _dapperDB = dapperDb;
     }
 
-
-    #region Create
-
-    #endregion
     
     public async Task<Responses<Customer>> CreateCustomer(CreateCustomerVm createCustomerVm)
     {
@@ -122,7 +118,107 @@ public class CustomerRepository : ICustomerRepository
             ErrorMessage = "Somthings wrong"
         };
     }
+    public async Task<Responses<Customer>> GetAllCustomer()
+    {
+        var query = "select * from Customer ";
 
+
+        using (var conection = _dapperDB.CreateConnection())
+        {
+            var customers = await conection.QueryAsync<Customer>(query));
+
+            if(customers.Count() > 0)
+            {
+                return new Responses<Customer>()
+                {
+                    Message = "customers are here",
+                    Data = customers,
+                };
+            }
+
+
+            return new Responses<Customer>()
+            {
+                ErrorCode = -300,
+                ErrorMessage = "we have no customers here"
+            };
+
+
+        }
+
+
+
+
+
+    }
+    public async Task<Responses<Customer>> GetUserById(int id)
+    {
+        if(id < 0)
+        {
+            return new Responses<Customer>()
+            {
+                ErrorCode = -100,
+                ErrorMessage = "invalid id"
+            };
+        }
+
+
+        var query = $"select * from Customer where CustomerId = {id}";
+
+        using( var connection  = _dapperDB.CreateConnection())
+        {
+            var customer = await connection.QueryAsync<Customer>(query);
+            if(customer.Count() == 1)
+            {
+                return new Responses<Customer>()
+                {
+                    Data = customer,
+                    Message = "Done"
+                };
+            }
+
+            return new Responses<Customer>()
+            {
+                ErrorCode = -200,
+                ErrorMessage = "no result"
+            };
+        }
+    } 
+    public async Task<Responses<Customer>> UpdateCustomer(UpdateCustomerVm updateVm)
+    {
+        var query = $"update_customer_proc @FirstName = '{updateVm.Firstname}' , " +
+            $"@LastName = '{updateVm.Lastname}' " +
+            $"@State = '{updateVm.State}' " +
+            $"@City = '{updateVm.City}' " +
+            $"@CustomerID = {updateVm.CustomerID}";
+
+
+        using(var  connection = _dapperDB.CreateConnection())
+        {
+            var result = await connection.QueryAsync<int>(query);
+            if(result.Any(x => x == -100))
+            {
+                return new Responses<Customer>()
+                {
+                    ErrorCode = -100,
+                    ErrorMessage = "Somthings Wrong"
+                };
+            }
+
+
+            return new Responses<Customer>()
+            {
+                Message = "updated"
+            };
+        }
+
+
+
+        return new Responses<Customer>()
+        {
+            Message = "ok"
+        };
+    }
 
 
     #region Preavte
