@@ -28,5 +28,20 @@ namespace gng_sales_v1._5.Controllers
 
             return Ok(response.Message + " Done");
         }
+
+
+        [HttpDelete]
+        [Route("deleteCustomer")]
+        public async Task<IActionResult> DeleteCustomer( [FromBody]DeleteCustomerVm deleteCustomer)
+        {
+            var responce = await _cutomerService.DeleteCustomer(deleteCustomer);
+            if (responce.ErrorCode < 0)
+                return NotFound("error " + responce.ErrorMessage);
+
+
+            return Ok($"customer deleted");
+        }
+
+
     }
 }

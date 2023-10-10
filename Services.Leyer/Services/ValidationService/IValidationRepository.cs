@@ -1,8 +1,12 @@
-﻿namespace Services.Leyer.Services.ValidationService
+﻿using Data.Leyer.Models.Structs;
+using Data.Leyer.Models.ViewModels.Customer;
+using goolrang_sales_v1.Models;
+
+namespace Services.Leyer.Services.ValidationService
 {
     public interface IValidationRepository
     {
         bool EmailValidation(string email);
-        public bool PhoneValidate(string phone);
+        bool PhoneValidate(string phone);
     }
 }

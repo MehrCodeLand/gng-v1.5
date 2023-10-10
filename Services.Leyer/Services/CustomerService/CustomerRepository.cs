@@ -28,6 +28,7 @@ public class CustomerRepository : ICustomerRepository
     #region Create
 
     #endregion
+    
     public async Task<Responses<Customer>> CreateCustomer(CreateCustomerVm createCustomerVm)
     {
         var response = await ValidateCreateCustomerVm(createCustomerVm);
@@ -63,6 +64,63 @@ public class CustomerRepository : ICustomerRepository
             {
                 Message = $"customer:{createCustomerVm.FirstName} added",
             };
+    }
+    public async Task<Responses<Customer>> DeleteCustomer(DeleteCustomerVm deleteVm)
+    {
+        if(deleteVm.CutomerID != -1)
+        {
+            var query = $"delete_cutomer_byID_proc @customerID = {deleteVm.CutomerID} ";
+
+            using (var connecttion = _dapperDB.CreateConnection())
+            {
+                var result = await connecttion.QueryAsync<int>(query);
+
+                if(result.Any(x => x == -100))
+                {
+                    return new Responses<Customer>()
+                    {
+                        ErrorCode = -100,
+                        ErrorMessage = "user not found"
+                    };
+                }
+
+                return new Responses<Customer>()
+                {
+                    Message = $"Customer : {deleteVm.CutomerID} deleted",
+                };
+            }
+
+        }else if(deleteVm.Email != null || deleteVm.Email != "string")
+        {
+            var query = $"delete_customer_byEmai_proc @email = '{deleteVm.Email.ToUpper()}' ";
+
+            using (var connecttion = _dapperDB.CreateConnection())
+            {
+                var result = await connecttion.QueryAsync<int>(query);
+
+                if (result.Any(x => x == -100))
+                {
+                    return new Responses<Customer>()
+                    {
+                        ErrorCode = -100,
+                        ErrorMessage = $"user by {deleteVm.Email} email not found"
+                    };
+                }
+
+
+                return new Responses<Customer>()
+                {
+                    Message = $"Customer : {deleteVm.Email} deleted",
+                };
+            }
+        }
+
+
+        return new Responses<Customer>()
+        {
+            ErrorCode = -100,
+            ErrorMessage = "Somthings wrong"
+        };
     }
 
 
@@ -142,8 +200,6 @@ public class CustomerRepository : ICustomerRepository
         };
     }
 
-
-
     private bool HasNumber(string name)
     {
         var reg = new Regex("[0-9]");
@@ -151,5 +207,6 @@ public class CustomerRepository : ICustomerRepository
         return reg.Match(name).Success;
 
     }
+
     #endregion
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Data.Leyer.Models.Structs;
+using Data.Leyer.Models.ViewModels.Customer;
+using goolrang_sales_v1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +12,7 @@ namespace Services.Leyer.Services.ValidationService;
 
 public class ValidationRepository : IValidationRepository
 {
+
     public bool EmailValidation(string email)
     {
         Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
@@ -19,7 +23,6 @@ public class ValidationRepository : IValidationRepository
 
         return false;
     }
-
     public bool PhoneValidate(string phone)
     {
         if (phone.Length == 11)
@@ -30,6 +33,7 @@ public class ValidationRepository : IValidationRepository
 
         return true;
     }
+
 
 
 

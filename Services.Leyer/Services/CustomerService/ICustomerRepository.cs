@@ -7,5 +7,6 @@ namespace Services.Leyer.Services.CustomerService
     public interface ICustomerRepository
     {
         Task<Responses<Customer>> CreateCustomer(CreateCustomerVm createCustomerVm);
+        Task<Responses<Customer>> DeleteCustomer(DeleteCustomerVm deleteVm );
     }
 }
