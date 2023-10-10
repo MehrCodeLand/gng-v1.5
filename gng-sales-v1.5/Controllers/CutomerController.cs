@@ -16,7 +16,7 @@ namespace gng_sales_v1._5.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("createCutomer")]
         public async Task<IActionResult> GetAllCutomer([FromBody] CreateCustomerVm createCustomerVm )
         {

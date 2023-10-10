@@ -38,12 +38,12 @@ public class CustomerRepository : ICustomerRepository
 
         var query = $"exec insert_cutomer_proc " +
             $" @FirstName = '{createCustomerVm.FirstName.ToUpper() }' , " +
-            $" @LastName = '{createCustomerVm.LastName.ToUpper() }' " +
-            $" @Email = '{createCustomerVm.Email.ToUpper() }' " +
-            $" @Phone = '{createCustomerVm.Phone}' " +
-            $" @Address = '{createCustomerVm.Address}' " +
-            $" @City = '{createCustomerVm.City}' " +
-            $" @State = '{createCustomerVm.State}' " +
+            $" @LastName = '{createCustomerVm.LastName.ToUpper() }' ," +
+            $" @Email = '{createCustomerVm.Email.ToUpper() }', " +
+            $" @Phone = '{createCustomerVm.Phone}', " +
+            $" @Address = '{createCustomerVm.Address}', " +
+            $" @City = '{createCustomerVm.City}', " +
+            $" @Sate = '{createCustomerVm.State}', " +
             $" @ZipCode = '{createCustomerVm.ZipCode}' ";
 
         using (var connection = _dapperDB.CreateConnection())
@@ -103,7 +103,8 @@ public class CustomerRepository : ICustomerRepository
                 ErrorMessage = "lastname is to short",
             };
         }
-        else if (createCustomerVm.LastName.Length > 20)
+        else 
+        if (createCustomerVm.LastName.Length > 20)
         {
             return new Responses<Customer>()
             {
