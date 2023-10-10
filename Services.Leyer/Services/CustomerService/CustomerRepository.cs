@@ -125,7 +125,7 @@ public class CustomerRepository : ICustomerRepository
 
         using (var conection = _dapperDB.CreateConnection())
         {
-            var customers = await conection.QueryAsync<Customer>(query));
+            var customers = await conection.QueryAsync<Customer>(query);
 
             if(customers.Count() > 0)
             {
