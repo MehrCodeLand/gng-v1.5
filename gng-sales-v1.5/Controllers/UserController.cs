@@ -24,7 +24,6 @@ public class UserController : ControllerBase
         if (response.ErrorCode < 0)
             return NotFound(response.ErrorMessage);
 
-
         return Ok(response.Message);    
     }
 
@@ -60,5 +59,19 @@ public class UserController : ControllerBase
 
 
         return Ok(result.Data);
+    }
+
+    [HttpPut]
+    [Route("updateUser")]
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserVm userVm )
+    {
+        if (!ModelState.IsValid)
+            return NotFound(ModelState);
+        var response = await _userSer.UpdateUser(userVm);
+        if (response.ErrorCode < 0)
+            return NotFound(response.ErrorMessage);
+
+
+        return Ok(response.Message);
     }
 }

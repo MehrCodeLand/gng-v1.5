@@ -122,4 +122,38 @@ public class UserRepository : IUserRepository
     }
 
     #endregion
+
+    #region Update
+
+    public async Task<Responses<User>> UpdateUser(UpdateUserVm userVm)
+    {
+        var query = $"user_update_proc_adv " +
+            $" @UserId = {userVm.UserId} , " +
+            $" @firstName = '{userVm.FirstName}' , " +
+            $" @lastName= '{userVm.LastName}' ";
+
+
+        using( var connection = _dapperDB.CreateConnection())
+        {
+            var result = await connection.QueryAsync(query);
+
+            if(result.Any(x => x.ErrorCode == null))
+            {
+                return new Responses<User>()
+                {
+                    Message = "Done"
+                };
+            }
+
+            return new Responses<User>()
+            {
+                ErrorCode = result.First().ErrorCode,
+                ErrorMessage = result.First().ErrorMessage,
+            };
+
+        }
+
+    }
+
+    #endregion
 }
