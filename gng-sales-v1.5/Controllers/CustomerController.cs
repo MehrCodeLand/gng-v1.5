@@ -7,10 +7,10 @@ namespace gng_sales_v1._5.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CutomerController : ControllerBase
+    public class CustomerController : ControllerBase
     {
         private readonly ICustomerRepository _cutomerService;
-        public CutomerController( ICustomerRepository customerRepository )
+        public CustomerController( ICustomerRepository customerRepository )
         {
             _cutomerService = customerRepository;
         }

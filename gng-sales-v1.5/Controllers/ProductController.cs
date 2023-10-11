@@ -20,6 +20,43 @@ public class ProductController : ControllerBase
     }
 
 
+
+
+    [HttpGet]
+    [Route("getProductById/{proId}")]
+    public async Task<IActionResult> GetProductByID( int proId)
+    {
+        var response = await _product.GEtProductById(proId);
+        if (response.ErrorCode < 0)
+            return NotFound(response.ErrorMessage);
+
+
+        return Ok(response.Data);
+    }
+
+    [HttpPut]
+    [Route("updateProduct")]
+    public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductVm productVm)
+    {
+        var response = await _product.UpdateProduct(productVm);
+        if (response.ErrorCode < 0)
+            return NotFound(response.ErrorMessage);
+
+
+        return Ok(response);
+    }
+
+    [HttpDelete]
+    [Route("deleteProduct/{proId}")]
+    public async Task<IActionResult> DeleteProduct(int proId)
+    {
+        var response = await _product.DeleteProductByID(proId);
+        if (response.ErrorCode < 0)
+            return NotFound(response.ErrorMessage);
+
+        return Ok(response.Message);
+    }
+
     [HttpGet]
     [Route("getAllProduct")]
     public async Task<IActionResult> GetAllProduct()
