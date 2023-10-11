@@ -1,5 +1,6 @@
 ﻿using Data.Leyer.Models.Structs;
 using Data.Leyer.Models.ViewModels.Customer;
+using Data.Leyer.Models.ViewModels.Product;
 using goolrang_sales_v1.Models;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,25 @@ public class ValidationRepository : IValidationRepository
         return true;
     }
 
+    public async Task<Responses<Product>> ValidateCreateProduct( CreateProductVm productVm )
+    {
+        if(productVm.Name.Length < 3 || productVm.Name.Length > 50)
+        {
+            return new Responses<Product>()
+            {
+                ErrorCode = -150,
+                ErrorMessage = "please cheack lenght "
+            };
+        }
 
+
+
+
+        return new Responses<Product>()
+        {
+            Message = "done"
+        };
+    }
 
 
     private bool PhoneRegEx(string phone)

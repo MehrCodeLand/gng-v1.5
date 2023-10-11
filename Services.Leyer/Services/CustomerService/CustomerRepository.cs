@@ -221,6 +221,8 @@ public class CustomerRepository : ICustomerRepository
     }
 
 
+
+
     #region Preavte
 
     private async Task<Responses<Customer>> ValidateCreateCustomerVm(CreateCustomerVm createCustomerVm)
