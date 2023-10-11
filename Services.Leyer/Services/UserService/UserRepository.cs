@@ -27,7 +27,7 @@ public class UserRepository : IUserRepository
 
     public async Task<Responses<User>> GetAllUser()
     {
-        var query = "select *from [User]";
+        var query = "select * from [User]";
 
 
         using(var connection = _dapperDB.CreateConnection())
@@ -56,6 +56,9 @@ public class UserRepository : IUserRepository
     }
 
     #endregion
+
+    #region Create
+
     public async Task<Responses<User>> CreateUser(CreateUserVm userVm)
     {
         var query = $"insert_user_proc " +
@@ -85,4 +88,38 @@ public class UserRepository : IUserRepository
             };
         }
     }
+
+
+    #endregion
+
+    #region Delete
+
+    public async Task<Responses<User>> DeleteUserById(int userId)
+    {
+        var query = $"delete_user_proc_adv " +
+            $" @userId = {userId}";
+
+        using( var connection = _dapperDB.CreateConnection())
+        {
+            var result = await connection.QueryAsync(query);
+            if(result.Any(x => x.ErrorCode == null))
+            {
+
+                return new Responses<User>()
+                {
+                    Message = "DONE"
+                };
+            }
+
+
+            return new Responses<User>()
+            {
+                ErrorCode = result.First().ErrorCode,
+                ErrorMessage = result.First().ErrorMessage,
+            };
+
+        }
+    }
+
+    #endregion
 }

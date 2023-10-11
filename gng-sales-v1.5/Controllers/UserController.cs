@@ -16,6 +16,18 @@ public class UserController : ControllerBase
     }
 
 
+    [HttpDelete]
+    [Route("deleteUserById/{userId}")]
+    public async Task<IActionResult> DeleteUserById(int userId)
+    {
+        var response = await _userSer.DeleteUserById(userId);
+        if (response.ErrorCode < 0)
+            return NotFound(response.ErrorMessage);
+
+
+        return Ok(response.Message);    
+    }
+
     [HttpPost]
     [Route("createUser")]
     public async Task<IActionResult> CreateUser([FromBody]CreateUserVm userVm)

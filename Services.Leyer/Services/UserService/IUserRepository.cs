@@ -8,5 +8,6 @@ namespace Services.Leyer.Services.UserService
     {
         Task<Responses<User>> CreateUser(CreateUserVm userVm);
         Task<Responses<User>> GetAllUser();
+        Task<Responses<User>> DeleteUserById(int userId);
     }
 }
