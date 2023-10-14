@@ -19,11 +19,11 @@ public class UserController : ControllerBase
     [Route("GetAllUser")]
     public async Task<IActionResult> GetAllUsers()
     {
-        var result  = await _userSer.GetAllUser();
-        if (result.ErrorCode < 0)
-            return NotFound(result.ErrorMessage);
+        var response  = await _userSer.GetAllUser();
+        if (response.HasError)
+            return NotFound(response.ErrorMessage);
 
-        return Ok(result.Data);
+        return Ok(response);
     }
 
     [HttpPost]
@@ -35,10 +35,10 @@ public class UserController : ControllerBase
         }
 
         var response = await _userSer.CreateUser(userVm);
-        if(response.ErrorCode < 0 )
-            return NotFound(response.ErrorMessage);
+        if(response.HasError )
+            return NotFound(response);
 
-        return Ok("DONE");
+        return Ok();
     }
 
     [HttpDelete]
@@ -50,7 +50,7 @@ public class UserController : ControllerBase
             return NotFound(ModelState);
         }
         var response = await _userSer.DeleteUserById(userId);
-        if (response.ErrorCode < 0)
+        if (response.HasError)
             return NotFound(response.ErrorMessage);
 
         return Ok(response.Message);    
@@ -62,9 +62,9 @@ public class UserController : ControllerBase
         if (!ModelState.IsValid)
             return NotFound(ModelState);
         var response = await _userSer.UpdateUser(userVm);
-        if (response.ErrorCode < 0)
-            return NotFound(response.ErrorMessage);
+        if (response.HasError)
+            return NotFound(response);
 
-        return Ok(response.Message);
+        return Ok(response);
     }
 }

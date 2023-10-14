@@ -24,7 +24,7 @@ public class ProductController : ControllerBase
         }
 
         var response = await _product.GetAllProduct();
-        if (response.ErrorCode < 0)
+        if (response.HasError)
             return NotFound(response);
 
         return Ok(response);
@@ -35,7 +35,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> GetProductByID( int proId)
     {
         var response = await _product.GEtProductById(proId);
-        if (response.ErrorCode < 0)
+        if (response.HasError)
             return NotFound(response);
 
         return Ok(response);
@@ -50,7 +50,7 @@ public class ProductController : ControllerBase
         }
 
         var response = await _product.UpdateProduct(productVm);
-        if (response.ErrorCode < 0)
+        if (response.HasError)
             return NotFound(response);
 
         return Ok(response);
@@ -61,7 +61,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> DeleteProduct(int proId)
     {
         var response = await _product.DeleteProductByID(proId);
-        if (response.ErrorCode < 0)
+        if (response.HasError)
             return NotFound(response);
 
         return Ok(response);
@@ -74,7 +74,7 @@ public class ProductController : ControllerBase
             return NotFound(ModelState);
 
         var response  = await _product.CreateProduct(productVm);
-        if (response.ErrorCode < 0)
+        if (response.HasError)
             return NotFound(response);
 
         return Ok(response);

@@ -24,7 +24,7 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var response = await _catService.GetAllCategory();
-        if(response.ErrorCode < 0)
+        if(response.HasError)
         {
             return NotFound(response);
         }
@@ -37,7 +37,7 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> GetCategoryByName(string name)
     {
         var response = await _catService.GetCategoryByName(name);
-        if(response.ErrorCode < 0 )
+        if(response.HasError )
         {
             return NotFound(response);
         }
@@ -51,7 +51,7 @@ public class CategoryController : ControllerBase
     {
         var responce = await _catService.DeleteCategory(catId);
 
-        if(responce.ErrorCode  < 0)
+        if(responce.HasError)
         {
             return NotFound( responce );
         }
@@ -66,7 +66,7 @@ public class CategoryController : ControllerBase
             return NotFound(ModelState);
 
         var response =await _catService.CreateCategory(categoryVm);
-        if(response.ErrorCode < 0)
+        if(response.HasError)
         {
             return NotFound(response);
         }
@@ -81,7 +81,7 @@ public class CategoryController : ControllerBase
             return NotFound(ModelState);
 
         var response = await _catService.UpdateCategory(categoryVm);
-        if(response.ErrorCode < 0)
+        if(response.HasError)
         {
             return NotFound(response);
         }

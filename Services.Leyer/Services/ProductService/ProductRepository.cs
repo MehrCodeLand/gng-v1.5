@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Data.Leyer.DbContext;
 using goolrang_sales_v1.Models;
+using Services.Leyer.Localization;
 using Services.Leyer.Responses.Structs;
 using Services.Leyer.ViewModels.Product;
 using System;
@@ -32,7 +33,7 @@ public class ProductRepository : IProductRepository
 
             return new Responses<Product>()
             {
-                ErrorCode = -100,
+                HasError = true ,
                 ErrorMessage = "We have no product"
             };
         }
@@ -55,8 +56,8 @@ public class ProductRepository : IProductRepository
 
             return new Responses<Product>()
             {
-                ErrorCode = -100,
-                ErrorMessage = "Product was not found"
+                HasError = true ,
+                ErrorMessage = Messages.RecordNotFound 
             };
         }
     }
@@ -78,7 +79,7 @@ public class ProductRepository : IProductRepository
 
                 return new Responses<Product>()
                 {
-                    ErrorCode = result.First().ErrorCode,
+                    HasError = true,
                     ErrorMessage = result.First().ErrorMessage,
                 };
             }
@@ -99,8 +100,8 @@ public class ProductRepository : IProductRepository
             {
                 return new Responses<Product>()
                 {
-                    ErrorCode = result.First().ErrorCode,
-                    ErrorMessage = result.First().ErrorMessage,
+                    HasError = true ,
+                    ErrorMessage = Messages.RecordNotFound
                 };
             }
             return new Responses<Product>();
@@ -125,7 +126,7 @@ public class ProductRepository : IProductRepository
             {
                 return new Responses<Product>()
                 {
-                    ErrorCode = result.First().ErrorCode,
+                    HasError = true,
                     ErrorMessage = result.First().ErrorMessage,
                 };
             }

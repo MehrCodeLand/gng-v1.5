@@ -2,6 +2,7 @@
 using Data.Leyer.DbContext;
 
 using goolrang_sales_v1.Models;
+using Services.Leyer.Localization;
 using Services.Leyer.Responses.Structs;
 using Services.Leyer.ViewModels.Customer;
 using System.Text.RegularExpressions;
@@ -34,8 +35,8 @@ public class CustomerRepository : ICustomerRepository
             {
                 return new Responses<Customer>()
                 {
-                    ErrorCode = -200,
-                    ErrorMessage = "email pr phon number is exist"
+                    HasError = true ,
+                    ErrorMessage = Messages.InvalidInputData
                 };
             }
         }
@@ -56,8 +57,8 @@ public class CustomerRepository : ICustomerRepository
                 {
                     return new Responses<Customer>()
                     {
-                        ErrorCode = -100,
-                        ErrorMessage = "user not found"
+                        HasError = true ,
+                        ErrorMessage = Messages.RecordNotFound
                     };
                 }
 
@@ -77,8 +78,8 @@ public class CustomerRepository : ICustomerRepository
                 {
                     return new Responses<Customer>()
                     {
-                        ErrorCode = -100,
-                        ErrorMessage = $"user by {deleteVm.Email} email not found"
+                        HasError = true,
+                        ErrorMessage = Messages.RecordNotFound
                     };
                 }
                 return new Responses<Customer>();
@@ -87,8 +88,8 @@ public class CustomerRepository : ICustomerRepository
 
         return new Responses<Customer>()
         {
-            ErrorCode = -100,
-            ErrorMessage = "Somthings wrong"
+            HasError =true ,
+            ErrorMessage = Messages.SomthingWrong
         };
     }
     public async Task<Responses<Customer>> GetAllCustomer()
@@ -109,8 +110,8 @@ public class CustomerRepository : ICustomerRepository
 
             return new Responses<Customer>()
             {
-                ErrorCode = -300,
-                ErrorMessage = "we have no customers here"
+                HasError = true ,
+                ErrorMessage = Messages.NoDataReult
             };
         }
     }
@@ -120,8 +121,8 @@ public class CustomerRepository : ICustomerRepository
         {
             return new Responses<Customer>()
             {
-                ErrorCode = -100,
-                ErrorMessage = "invalid id"
+                HasError = true,
+                ErrorMessage = Messages.InvalidID
             };
         }
 
@@ -140,8 +141,8 @@ public class CustomerRepository : ICustomerRepository
 
             return new Responses<Customer>()
             {
-                ErrorCode = -200,
-                ErrorMessage = "no result"
+                HasError = true ,
+                ErrorMessage = Messages.RecordNotFound 
             };
         }
     } 
@@ -160,8 +161,8 @@ public class CustomerRepository : ICustomerRepository
             {
                 return new Responses<Customer>()
                 {
-                    ErrorCode = -100,
-                    ErrorMessage = "Somthings Wrong"
+                    HasError = true,
+                    ErrorMessage = Messages.SomthingWrong
                 };
             }
             return new Responses<Customer>();

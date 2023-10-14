@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Services.Leyer.ViewModels.BaseVm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,16 +8,7 @@ using System.Threading.Tasks;
 
 namespace Services.Leyer.ViewModels.User;
 
-public class UpdateUserVm
+public class UpdateUserVm : EntityBaseVm
 {
-    [Required]
-    public int UserId { get; set; }
-    [Required(ErrorMessage = "please enter data")]
-    [MinLength(2, ErrorMessage = "min len is 2")]
-    [MaxLength(50, ErrorMessage = "max len is 50")]
-    public string FirstName { get; set; }
-    [Required(ErrorMessage = "please enter data")]
-    [MinLength(2, ErrorMessage = "min len is 2")]
-    [MaxLength(50, ErrorMessage = "max len is 50")]
-    public string LastName { get; set; }
+  public string LastName { get; set; }
 }

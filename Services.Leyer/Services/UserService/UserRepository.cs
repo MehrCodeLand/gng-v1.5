@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Data.Leyer.DbContext;
 using goolrang_sales_v1.Models;
+using Services.Leyer.Localization;
 using Services.Leyer.Responses.Structs;
 using Services.Leyer.Security;
 using Services.Leyer.ViewModels.User;
@@ -29,8 +30,8 @@ public class UserRepository : IUserRepository
             }
             return new Responses<User>()
             {
-                ErrorCode = -200,
-                ErrorMessage = "we have no User yet"
+                HasError = true ,
+                ErrorMessage = Messages.NoDataReult
             };
         }
     }
@@ -40,7 +41,7 @@ public class UserRepository : IUserRepository
         {
             return new Responses<User>()
             {
-                ErrorCode = -300,
+                HasError= true ,
                 ErrorMessage = "the password and repassword are not match"
             };
         }
@@ -64,7 +65,7 @@ public class UserRepository : IUserRepository
 
             return new Responses<User>()
             {
-                ErrorCode = result.First().ErrorCode,
+                HasError = true ,
                 ErrorMessage = result.First().Message,
             };
         }
@@ -85,7 +86,7 @@ public class UserRepository : IUserRepository
 
             return new Responses<User>()
             {
-                ErrorCode = result.First().ErrorCode,
+                HasError = true ,
                 ErrorMessage = result.First().ErrorMessage,
             };
         }
@@ -93,8 +94,8 @@ public class UserRepository : IUserRepository
     public async Task<Responses<User>> UpdateUser(UpdateUserVm userVm)
     {
         var query = $"user_update_proc_adv " +
-            $" @UserId = {userVm.UserId} , " +
-            $" @firstName = '{userVm.FirstName}' , " +
+            $" @UserId = {userVm.Id} , " +
+            $" @firstName = '{userVm.Name}' , " +
             $" @lastName= '{userVm.LastName}' ";
 
         using( var connection = _dapperDB.CreateConnection())
@@ -108,7 +109,7 @@ public class UserRepository : IUserRepository
 
             return new Responses<User>()
             {
-                ErrorCode = result.First().ErrorCode,
+                HasError = true,
                 ErrorMessage = result.First().ErrorMessage,
             };
         }

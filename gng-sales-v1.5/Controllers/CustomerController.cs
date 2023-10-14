@@ -20,7 +20,7 @@ namespace gng_sales_v1._5.Controllers
         public async Task<IActionResult> GetCustomers()
         {
             var response = await _cutomerService.GetAllCustomer();
-            if (response.ErrorCode < 0)
+            if (response.HasError)
                 return NotFound(response );
 
             return Ok(response);
@@ -31,7 +31,7 @@ namespace gng_sales_v1._5.Controllers
         public async Task<IActionResult> GetCustomerById(int id)
         {
             var response = await _cutomerService.GetUserById(id);
-            if (response.ErrorCode < 0)
+            if (response.HasError)
                 return NotFound(response);
 
             return Ok(response);
@@ -44,7 +44,7 @@ namespace gng_sales_v1._5.Controllers
                 return NotFound(ModelState);
 
             var response = await _cutomerService.CreateCustomer(createCustomerVm); 
-            if(response.ErrorCode < 0)
+            if(response.HasError)
             {
                 return NotFound(response); 
             }
@@ -59,7 +59,7 @@ namespace gng_sales_v1._5.Controllers
                 return NotFound(ModelState);
 
             var response = await _cutomerService.DeleteCustomer(deleteCustomer);
-            if (response.ErrorCode < 0)
+            if (response.HasError)
                 return NotFound(response);
 
             return Ok(response);

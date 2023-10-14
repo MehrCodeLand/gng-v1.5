@@ -24,11 +24,9 @@ public class CreateUserVm
     public string Phone { get; set; }
 
     [DataType(DataType.Password)]
-    [MinLength(5)]
     [MaxLength(15)]
-    public string Password { get; set; }
+    public required string Password { get; init; }
     [DataType(DataType.Password)]
     [Compare(nameof(Password) , ErrorMessage = "plesae check pass and re-pass")]
-    [MinLength(5)]
-    public string RePassword { get; set; }
+    public required string RePassword { get; init; }
 }
