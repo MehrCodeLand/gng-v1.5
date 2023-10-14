@@ -1,16 +1,14 @@
-﻿using Data.Leyer.Models.Structs;
-using Data.Leyer.Models.ViewModels.Category;
-using goolrang_sales_v1.Models;
+﻿using goolrang_sales_v1.Models;
+using Services.Leyer.Responses.Structs;
+using Services.Leyer.ViewModels.ViewModels.Category;
 
-namespace Services.Leyer.Services.CategoryServices
+namespace Services.Leyer.Services.CategoryServices;
+
+public interface ICategoryRepository
 {
-    public interface ICategoryRepository
-    {
-        Task<Responses<Category>> GetCategoryByName(string categoryName = null);
-        Task<Responses<Category>> GetAllCategory();
-        Task<Responses<Category>> DeleteCategory(int id);
-        Task<Responses<Category>> Test_Method();
-        Task<Responses<Category>> CreateCategory(CreateCategoryVm categoryVm);
-        Task<Responses<Category>> UpdateCategory(UpdateCategoryVm categoryVm);
-    }   
-}
+    Task<Responses<Category>> GetCategoryByName(string categoryName = null);
+    Task<Responses<Category>> GetAllCategory();
+    Task<Responses<Category>> DeleteCategory(int id);
+    Task<Responses<Category>> CreateCategory(CreateCategoryVm categoryVm);
+    Task<Responses<Category>> UpdateCategory(UpdateCategoryVm categoryVm);
+}   

@@ -1,8 +1,8 @@
-﻿using Data.Leyer.Models.ViewModels.User;
-using goolrang_sales_v1.Models;
+﻿using goolrang_sales_v1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Services.Leyer.ViewModels.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -34,8 +34,6 @@ public class AuthController : ControllerBase
 
         return Ok();
     }
-
-
 
     [HttpPost]
     [Route("loginUser")]

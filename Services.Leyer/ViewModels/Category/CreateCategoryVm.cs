@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Leyer.Models.ViewModels.Category;
+namespace Services.Leyer.ViewModels.ViewModels.Category;
 
 public class CreateCategoryVm
 {
-    [Required()]
+    [Required]
+    [MaxLength(100)]
+    [MinLength(2)]
     public string CategoryName { get; set; }
     public string? Description { get; set; }
 }

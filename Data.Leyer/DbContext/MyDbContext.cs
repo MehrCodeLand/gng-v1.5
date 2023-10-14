@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Data.Leyer.DbContext;
 
-public class DapperDbContext
+public class MyDbContext
 {
     private readonly IConfiguration _configuration;
     private readonly string _sqlConn;
 
-    public DapperDbContext( IConfiguration configuration )
+    public MyDbContext( IConfiguration configuration )
     {
         _configuration = configuration;
         _sqlConn = _configuration.GetConnectionString("SqlConn");

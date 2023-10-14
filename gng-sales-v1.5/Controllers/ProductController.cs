@@ -1,10 +1,6 @@
-﻿using Azure;
-using Data.Leyer.Models.Structs;
-using Data.Leyer.Models.ViewModels.Product;
-using goolrang_sales_v1.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Services.Leyer.Services.ProductService;
+using Services.Leyer.ViewModels.Product;
 
 namespace gng_sales_v1._5.Controllers;
 
@@ -13,71 +9,74 @@ namespace gng_sales_v1._5.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository _product;
-
     public ProductController( IProductRepository product )
     {
         _product = product;
     }
 
+    [HttpGet]
+    [Route("GetAllProduct")]
+    public async Task<IActionResult> GetAllProduct()
+    {
+        if(!ModelState.IsValid)
+        {
+            return NotFound(ModelState);
+        }
 
+        var response = await _product.GetAllProduct();
+        if (response.ErrorCode < 0)
+            return NotFound(response);
 
+        return Ok(response);
+    }
 
     [HttpGet]
-    [Route("getProductById/{proId}")]
+    [Route("GetProductById/{proId}")]
     public async Task<IActionResult> GetProductByID( int proId)
     {
         var response = await _product.GEtProductById(proId);
         if (response.ErrorCode < 0)
-            return NotFound(response.ErrorMessage);
+            return NotFound(response);
 
-
-        return Ok(response.Data);
+        return Ok(response);
     }
 
     [HttpPut]
-    [Route("updateProduct")]
     public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductVm productVm)
     {
+        if (!ModelState.IsValid)
+        {
+            return NotFound(ModelState);
+        }
+
         var response = await _product.UpdateProduct(productVm);
         if (response.ErrorCode < 0)
-            return NotFound(response.ErrorMessage);
-
+            return NotFound(response);
 
         return Ok(response);
     }
 
     [HttpDelete]
-    [Route("deleteProduct/{proId}")]
+    [Route("{proId}")]
     public async Task<IActionResult> DeleteProduct(int proId)
     {
         var response = await _product.DeleteProductByID(proId);
         if (response.ErrorCode < 0)
-            return NotFound(response.ErrorMessage);
+            return NotFound(response);
 
-        return Ok(response.Message);
-    }
-
-    [HttpGet]
-    [Route("getAllProduct")]
-    public async Task<IActionResult> GetAllProduct()
-    {
-        var response = await _product.GetAllProduct();
-        if (response.ErrorCode < 0)
-            return NotFound(response.ErrorMessage);
-
-
-
-        return Ok(response.Data);
+        return Ok(response);
     }
 
     [HttpPost]
-    [Route("createProduct")]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductVm productVm)
     {
-        var responce  = await _product.CreateProduct(productVm);
-        if (responce.ErrorCode < 0)
-            return NotFound(responce.ErrorMessage);
+        if (!ModelState.IsValid)
+            return NotFound(ModelState);
 
-        return Ok(responce.Message);
+        var response  = await _product.CreateProduct(productVm);
+        if (response.ErrorCode < 0)
+            return NotFound(response);
+
+        return Ok(response);
     }
 }

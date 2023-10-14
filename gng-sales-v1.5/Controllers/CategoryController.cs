@@ -1,10 +1,9 @@
-﻿using Data.Leyer.Models.Structs;
-using Data.Leyer.Models.ViewModels.Category;
-using goolrang_sales_v1.Models;
+﻿using goolrang_sales_v1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Services.Leyer.Services.CategoryServices;
+using Services.Leyer.ViewModels.ViewModels.Category;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
@@ -20,94 +19,73 @@ public class CategoryController : ControllerBase
         _catService = categoryService;
     }
 
+    [HttpGet]
+    [Route("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var response = await _catService.GetAllCategory();
+        if(response.ErrorCode < 0)
+        {
+            return NotFound(response);
+        }
 
+        return Ok(response);
+    }
 
+    [HttpGet]
+    [Route("GetByName/{name}")]
+    public async Task<IActionResult> GetCategoryByName(string name)
+    {
+        var response = await _catService.GetCategoryByName(name);
+        if(response.ErrorCode < 0 )
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response); 
+    }
 
     [HttpDelete]
-    [Route("deleteCategoryById/{catId}")]
+    [Route("{catId}")]
     public async Task<IActionResult> DeleteCAtegoryById(int catId)
     {
         var responce = await _catService.DeleteCategory(catId);
 
         if(responce.ErrorCode  < 0)
         {
-            return NotFound( responce.ErrorMessage);
+            return NotFound( responce );
         }
 
-
-        return Ok(responce.Message + " - DONE");
+        return Ok(responce);
     }
-
-    [HttpGet]
-    [Route("getAll")]
-    public async Task<IActionResult> GetAll()
-    {
-        var res = await _catService.GetAllCategory();
-        if(res.ErrorCode < 0)
-        {
-            return NotFound(res.ErrorCode + " " + res.ErrorMessage );
-        }
-
-        return Ok(res.Data);
-    }
-
-    [HttpGet]
-    [Route("getByName/{name}")]
-    public async Task<IActionResult> GetCategoryByName(string name)
-    {
-        var response = await _catService.GetCategoryByName(name);
-        if(response.ErrorCode < 0 )
-        {
-            return NotFound(response.ErrorMessage);
-        }
-
-        return Ok(response.Data); 
-    }
-
 
     [HttpPost]
-    [Route("createCategory")]
     public async Task<IActionResult> CreateCategory( [FromBody]CreateCategoryVm categoryVm )
     {
+        if (!ModelState.IsValid)
+            return NotFound(ModelState);
+
         var response =await _catService.CreateCategory(categoryVm);
         if(response.ErrorCode < 0)
         {
-            return NotFound(response.ErrorMessage);
+            return NotFound(response);
         }
 
-        // redirect to another action
-        return Ok(response.Message);
+        return Ok(response);
     }
 
-
     [HttpPut]
-    [Route("updateCategory")]
     public async Task<IActionResult> UpdateCategory([FromBody]UpdateCategoryVm categoryVm)
     {
+        if (!ModelState.IsValid)
+            return NotFound(ModelState);
+
         var response = await _catService.UpdateCategory(categoryVm);
         if(response.ErrorCode < 0)
         {
-            return NotFound(response.ErrorMessage);
+            return NotFound(response);
         }
 
-        return Ok(response.Message);
+        return Ok(response);
     }
-
-
-    #region TEST
-
-    [HttpGet]
-    [Route("hello")]
-    public async Task<IActionResult> Hello()
-    {
-        var x = await _catService.Test_Method();
-
-
-        return Ok();
-    }
-
-    #endregion
-
-
-
 }

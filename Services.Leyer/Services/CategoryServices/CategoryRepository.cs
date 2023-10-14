@@ -1,35 +1,21 @@
 ﻿using Azure;
 using Dapper;
 using Data.Leyer.DbContext;
-using Data.Leyer.Models.Structs;
-using Data.Leyer.Models.ViewModels.Category;
 using goolrang_sales_v1.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
-using Data.Leyer.Models.Structs;
-using Data.Leyer.Models.ViewModels.Category;
-using goolrang_sales_v1.Models;
+using Services.Leyer.ViewModels.ViewModels.Category;
+using Services.Leyer.Responses.Structs;
 
 namespace Services.Leyer.Services.CategoryServices;
 
 public class CategoryRepository : ICategoryRepository
 {
-    private readonly DapperDbContext _dbDapper;
-    public CategoryRepository(DapperDbContext dapperDb)
+    private readonly MyDbContext _dbDapper;
+    public CategoryRepository(MyDbContext dapperDb)
     {
         _dbDapper = dapperDb;
     }
-
-
-
-    #region Read
     public async Task<Responses<Category>> GetAllCategory()
     {
         var query = "select * from Category";
@@ -50,11 +36,9 @@ public class CategoryRepository : ICategoryRepository
             return new Responses<Category>()
             {
                 DataJson = jsonData,
-                Data = categories ,
-                Message = $"We found {categories.Count()} categoriy/ies"
+                Data = categories
             };
         } 
-
     }
     public async Task<Responses<Category>> GetCategoryByName(string categoryName = null)
     {
@@ -85,17 +69,11 @@ public class CategoryRepository : ICategoryRepository
             var dataJson = JsonConvert.SerializeObject(category);
             return new Responses<Category>()
             {
-                Message = "Category is find",
                 DataJson = dataJson,
                 Data = category
             };
         }
     }
-
-    #endregion
-
-    #region Delete
-
     public async Task<Responses<Category>> DeleteCategory( int id)
     {
         if( id < 0 )
@@ -122,25 +100,14 @@ public class CategoryRepository : ICategoryRepository
                 };
             }
 
-            return new Responses<Category>()
-            {
-                Message = $"category {id} was deleted.",
-            };
-
+            return new Responses<Category>();
         }
-
     }
-
-    #endregion
-
-    #region Create
-
     public async Task<Responses<Category>> CreateCategory(CreateCategoryVm categoryVm )
     {
         var response = await ValidateCreateVm(categoryVm);
         if (response.ErrorCode < 0)
             return response;
-
 
         var query = $"category_insert_proc @categoryName = {categoryVm.CategoryName.ToLower() } " +
             $" , @Description = {categoryVm.Description}";
@@ -150,17 +117,8 @@ public class CategoryRepository : ICategoryRepository
             var result = connection.QueryAsync(query);
         }
 
-
-        return new Responses<Category>()
-        {
-            Message = $"category : {categoryVm.CategoryName.ToLower()} added",
-        };
+        return new Responses<Category>();
     }
-
-    #endregion
-
-    #region Update
-
     public async Task<Responses<Category>> UpdateCategory( UpdateCategoryVm categoryVm )
     {
         var response = await ValidateUpdateVm(categoryVm);
@@ -183,20 +141,10 @@ public class CategoryRepository : ICategoryRepository
                 return response;
             }
 
-            response.ErrorCode = 1;
             response.Message = $"Category: {categoryVm.Id} updated";
-
             return response;
         }
-
-        return new Responses<Category>() { };
     }
-
-    #endregion
-
-    #region Validation
-
-    // async is nesecery?
     private async Task<Responses<Category>> ValidateCreateVm( CreateCategoryVm categoryVm)
     {
         if(categoryVm == null)
@@ -224,13 +172,8 @@ public class CategoryRepository : ICategoryRepository
             };
         }
 
-
-        return new Responses<Category>()
-        {
-            Message = "Done"
-        };
+        return new Responses<Category>();
     }
-
     private async Task<Responses<Category>> ValidateUpdateVm( UpdateCategoryVm categoryVm)
     {
         if (categoryVm == null)
@@ -258,33 +201,9 @@ public class CategoryRepository : ICategoryRepository
             };
         }
 
-
-
         return new Responses<Category>()
         {
             Message = "Done",
         };
     }
-
-    
-    #endregion
-
-    #region Test Method
-    public async Task<Responses<Category>> Test_Method()
-    {
-        var query = "if exists (select 1 from Category where CategoryId = 4 )" +
-            " begin select 100 end ";
-
-        using (var conection = _dbDapper.CreateConnection())
-        {
-            var result = await conection.QueryAsync<int>(query);
-
-            int i = 100;
-        }
-
-
-
-        return new Responses<Category>() { };
-    }
-    #endregion
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Leyer.Models.ViewModels.Customer;
+namespace Services.Leyer.ViewModels.Customer;
 
 public class DeleteCustomerVm
 {

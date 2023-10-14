@@ -1,7 +1,7 @@
-﻿using Data.Leyer.Models.ViewModels.Customer;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Leyer.Services.CustomerService;
+using Services.Leyer.ViewModels.Customer;
 
 namespace gng_sales_v1._5.Controllers
 {
@@ -15,58 +15,54 @@ namespace gng_sales_v1._5.Controllers
             _cutomerService = customerRepository;
         }
 
-
         [HttpGet]
-        [Route("getCustomers")]
+        [Route("GetCustomers")]
         public async Task<IActionResult> GetCustomers()
         {
             var response = await _cutomerService.GetAllCustomer();
             if (response.ErrorCode < 0)
-                return NotFound("Error "+ response.ErrorMessage );
+                return NotFound(response );
 
-
-            return Ok(response.Data);
+            return Ok(response);
         }
 
         [HttpGet]
-        [Route("getCustomerByID/{id}")]
+        [Route("GetCustomerByID/{id}")]
         public async Task<IActionResult> GetCustomerById(int id)
         {
             var response = await _cutomerService.GetUserById(id);
             if (response.ErrorCode < 0)
-                return NotFound(response.ErrorMessage);
+                return NotFound(response);
 
-
-
-            return Ok("customer" + response.Data);
+            return Ok(response);
         }
  
         [HttpPost]
-        [Route("createCutomer")]
         public async Task<IActionResult> GetAllCutomer([FromBody] CreateCustomerVm createCustomerVm )
         {
+            if (!ModelState.IsValid)
+                return NotFound(ModelState);
+
             var response = await _cutomerService.CreateCustomer(createCustomerVm); 
             if(response.ErrorCode < 0)
             {
-                return NotFound(response.ErrorMessage); 
+                return NotFound(response); 
             }
 
-            return Ok(response.Message + " Done");
+            return Ok(response);
         }
-
 
         [HttpDelete]
-        [Route("deleteCustomer")]
         public async Task<IActionResult> DeleteCustomer( [FromBody]DeleteCustomerVm deleteCustomer)
         {
-            var responce = await _cutomerService.DeleteCustomer(deleteCustomer);
-            if (responce.ErrorCode < 0)
-                return NotFound("error " + responce.ErrorMessage);
+            if (!ModelState.IsValid)
+                return NotFound(ModelState);
 
+            var response = await _cutomerService.DeleteCustomer(deleteCustomer);
+            if (response.ErrorCode < 0)
+                return NotFound(response);
 
-            return Ok($"customer deleted");
+            return Ok(response);
         }
-
-
     }
 }

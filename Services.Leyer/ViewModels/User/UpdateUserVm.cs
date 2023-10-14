@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Leyer.Models.ViewModels.User;
+namespace Services.Leyer.ViewModels.User;
 
 public class UpdateUserVm
 {

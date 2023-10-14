@@ -1,7 +1,10 @@
-﻿namespace goolrang_sales_v1.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace goolrang_sales_v1.Models;
 
 public class Product
 {
+    [Required]
     public int ProductId { get; set; }
     public string ProductName { get; set; }
     public int CategoryID { get; set; }
