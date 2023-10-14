@@ -269,7 +269,6 @@ public class CategoryRepository : ICategoryRepository
     
     #endregion
 
-
     #region Test Method
     public async Task<Responses<Category>> Test_Method()
     {

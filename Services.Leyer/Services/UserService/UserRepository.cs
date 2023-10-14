@@ -4,6 +4,7 @@ using Data.Leyer.DbContext;
 using Data.Leyer.Models.Structs;
 using Data.Leyer.Models.ViewModels.User;
 using goolrang_sales_v1.Models;
+using Services.Leyer.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,6 @@ public class UserRepository : IUserRepository
     {
         _dapperDB = dapperDb;
     }
-
-
 
 
     #region Read
@@ -61,11 +60,23 @@ public class UserRepository : IUserRepository
 
     public async Task<Responses<User>> CreateUser(CreateUserVm userVm)
     {
+        if(userVm.RePassword != userVm.Password)
+        {
+            return new Responses<User>()
+            {
+                ErrorCode = -300,
+                ErrorMessage = "the password and repassword are not match"
+            };
+        }
+
+
+        var hashPassword = HashPasswordC.EncodePasswordMd5(userVm.Password);
         var query = $"insert_user_proc " +
             $"@firstName = '{userVm.FirstName}' ," +
             $"@lastName = '{userVm.LastName}' , " +
             $"@email = '{userVm.Email.ToUpper()}' , " +
-            $"@phone = '{userVm.Phone}' ";
+            $"@phone = '{userVm.Phone}' , " +
+            $"@Password = '{hashPassword}' ";
 
 
         using (var connection = _dapperDB.CreateConnection())
