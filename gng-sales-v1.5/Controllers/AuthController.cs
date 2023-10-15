@@ -1,4 +1,5 @@
 ﻿using goolrang_sales_v1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -39,12 +40,11 @@ public class AuthController : ControllerBase
     [Route("loginUser")]
     public async Task<IActionResult> Login([FromBody] LoginUserVm userVm)
     {
-        //if(user.Email != userVm.Email)
-        //{
-        //    return BadRequest();
-        //}
-
-        if(!BCrypt.Net.BCrypt.Verify(userVm.Password , user.Password))
+        if (user.Email != userVm.Email)
+        {
+            return BadRequest();
+        }
+        if (!BCrypt.Net.BCrypt.Verify(userVm.Password , user.Password))
         {
             return BadRequest("wrong password");
         }

@@ -1,4 +1,5 @@
 ﻿using goolrang_sales_v1.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -6,6 +7,7 @@ using Services.Leyer.Services.CategoryServices;
 using Services.Leyer.ViewModels.ViewModels.Category;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
+
 
 namespace gng_sales_v1._5.Controllers;
 
@@ -29,7 +31,7 @@ public class CategoryController : ControllerBase
             return NotFound(response);
         }
 
-        return Ok(response);
+        return Ok(response.Data);
     }
 
     [HttpGet]
