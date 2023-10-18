@@ -31,8 +31,8 @@ public class CategoryController : ControllerBase
             return NotFound(response);
         }
 
-        return Ok(response.Data);
-    }
+        return Ok(response);
+    } 
 
     [HttpGet]
     [Route("GetByName/{name}")]
