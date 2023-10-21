@@ -61,6 +61,15 @@ namespace Services.Leyer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to کلید خارجی.
+        /// </summary>
+        internal static string FKeror {
+            get {
+                return ResourceManager.GetString("FKeror", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ایدی معتبر نیست.
         /// </summary>
         internal static string InvalidID {

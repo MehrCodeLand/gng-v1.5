@@ -51,14 +51,14 @@ public class CategoryController : ControllerBase
     [Route("{id}")]
     public async Task<IActionResult> DeleteCategoryById(int id)
     {
-        var responce = await _catService.DeleteCategory(id);
+        var response = await _catService.DeleteCategory(id);
 
-        if(responce.HasError)
+        if(response.HasError)
         {
-            return NotFound( responce );
+            return NotFound(response);
         }
 
-        return Ok(responce);
+        return Ok(response);
     }
 
     [HttpPost]

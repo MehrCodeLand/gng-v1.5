@@ -84,14 +84,31 @@ public class CategoryRepository : ICategoryRepository
             };
         }
 
-        var query = $"category_delete_proc @CategoryId = {id} ";
+        var query = $" exec delete_category_proc @categroyId = {id}";
 
         using (var connection = _dbDapper.CreateConnection())
         {
-            var result = await connection.QueryAsync<int>(query);
+            var result = await connection.QueryAsync(query);
 
-            if(result.Any(x => x == -100))
+            if(result.Any(x => x.ErrorCode != null ))
             {
+                if( result.Any(x => x.ErrorCode == -100))
+                {
+                    return new Responses<Category>()
+                    {
+                        HasError = true,
+                        ErrorMessage = Messages.NoDataReult
+                    };
+                }
+                else if(result.Any(x => x.ErrorCode == -300) )
+                {
+                    return new Responses<Category>()
+                    {
+                        HasError = true,
+                        ErrorMessage = Messages.FKeror
+                    };
+                }
+
                 return new Responses<Category>()
                 {
                     HasError = true,
