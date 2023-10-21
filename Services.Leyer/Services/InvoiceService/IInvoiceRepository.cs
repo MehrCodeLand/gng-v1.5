@@ -9,4 +9,5 @@ public interface IInvoiceRepository
     Task<Responses<Invoice>> GetAllInvoice();
     Task<Responses<Invoice>> DeleteById(int id);
     Task<Responses<Invoice>> CreateInvoice(CreateInvoiceVm createInvoice);
+    Task<Responses<Invoice>> GetInvoiceById(int invoiceId);
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using goolrang_sales_v1.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Leyer.Services.InvoiceService;
 using Services.Leyer.ViewModels.Invoice;
@@ -17,6 +18,7 @@ public class InvoiceController : ControllerBase
     }
 
     [HttpGet]
+    [Route("GetAllInvoice")]
     public async Task<IActionResult> GetAllInvoice()
     {
         var response = await _invoiceSer.GetAllInvoice();
@@ -26,6 +28,17 @@ public class InvoiceController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet]
+    [Route("GetInvoice/{invoiceId}")]
+    public async Task<IActionResult> GetInvoiceById( int invoiceId)
+    {
+        var response = await _invoiceSer.GetInvoiceById(invoiceId);
+        if (response.HasError)
+            return NotFound();
+        return Ok();
+    } 
+
 
     [HttpPost]
     public async Task<IActionResult> CreateInvoice([FromBody] CreateInvoiceVm createInvoiceVm)

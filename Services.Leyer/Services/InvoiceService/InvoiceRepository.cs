@@ -13,6 +13,26 @@ public class InvoiceRepository : IInvoiceRepository
     {
         _db = myDb;
     }
+    public async Task<Responses<Invoice>> GetInvoiceById(int invoiceId)
+    {
+        var query = $"select * from Invoice where InvoiceId = {invoiceId}";
+
+        using(var connection = _db.CreateConnection())
+        {
+            var result = await connection.QueryAsync(query);
+
+            if(result.Count() == 1)
+            {
+                return new Responses<Invoice>();
+            }
+
+            return new Responses<Invoice>()
+            {
+                HasError = true,
+                ErrorMessage = Messages.RecordNotFound
+            };
+        }
+    }
     public async Task<Responses<Invoice>> GetAllInvoice()
     {
         var query = "select * from Invoice";
