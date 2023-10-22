@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Leyer.ViewModels.ViewModels.Category;
+namespace Services.Leyer.ViewModels.Category;
 
-public class UpdateCategoryVm
+public class CategoriesVm
 {
     [Required]
     [MaxLength(100)]
     [MinLength(2)]
-    public string CategoryName { get; set; }
-    [MaxLength(255)]
+    public string Name { get; set; }
     public string? Description { get; set; }
 }

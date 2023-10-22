@@ -62,7 +62,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory( [FromBody]CreateCategoryVm categoryVm )
+    public async Task<IActionResult> CreateCategory([FromBody]CreateCategoryVm categoryVm )
     {
         if (!ModelState.IsValid)
             return NotFound(ModelState);
@@ -77,17 +77,19 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateCategory([FromBody]UpdateCategoryVm categoryVm)
+    [Route("{id}")]
+    public async Task<IActionResult> UpdateCategoryById( int id , [FromBody] UpdateCategoryVm categoryVm)
     {
         if (!ModelState.IsValid)
-            return NotFound(ModelState);
+            return BadRequest();
+        if (categoryVm.CategoryName == null && categoryVm.Description == null)
+            return Ok();
 
-        var response = await _catService.UpdateCategory(categoryVm);
-        if(response.HasError)
-        {
-            return NotFound(response);
-        }
+        var result = await _catService.UpdateCategory(id, categoryVm);
+        if (result.HasError)
+            return NotFound();
 
-        return Ok(response);
+
+        return Ok();
     }
 }

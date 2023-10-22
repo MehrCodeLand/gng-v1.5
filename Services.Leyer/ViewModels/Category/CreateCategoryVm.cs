@@ -9,6 +9,7 @@ namespace Services.Leyer.ViewModels.ViewModels.Category;
 
 public class CreateCategoryVm
 {
+    public int CategoryId { get; set; } = 0;
     [Required]
     [MaxLength(100)]
     [MinLength(2)]

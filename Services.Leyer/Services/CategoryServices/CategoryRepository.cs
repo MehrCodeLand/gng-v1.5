@@ -7,6 +7,8 @@ using System;
 using Services.Leyer.ViewModels.ViewModels.Category;
 using Services.Leyer.Responses.Structs;
 using Services.Leyer.Localization;
+using Services.Leyer.ViewModels.Category;
+using System.Linq;
 
 namespace Services.Leyer.Services.CategoryServices;
 
@@ -31,8 +33,6 @@ public class CategoryRepository : ICategoryRepository
                     ErrorMessage = Messages.NoDataReult 
                 };
             }
-
-            var jsonData = JsonConvert.SerializeObject(categories);
 
             return new Responses<Category>()
             {
@@ -84,7 +84,7 @@ public class CategoryRepository : ICategoryRepository
             };
         }
 
-        var query = $" exec delete_category_proc @categroyId = {id}";
+        var query = $" exec delete_category_proc @categoryId = {id}";
 
         using (var connection = _dbDapper.CreateConnection())
         {
@@ -97,7 +97,7 @@ public class CategoryRepository : ICategoryRepository
                     return new Responses<Category>()
                     {
                         HasError = true,
-                        ErrorMessage = Messages.NoDataReult
+                        ErrorMessage = Messages.FKeror
                     };
                 }
                 else if(result.Any(x => x.ErrorCode == -300) )
@@ -105,7 +105,7 @@ public class CategoryRepository : ICategoryRepository
                     return new Responses<Category>()
                     {
                         HasError = true,
-                        ErrorMessage = Messages.FKeror
+                        ErrorMessage = Messages.NoDataReult
                     };
                 }
 
@@ -121,20 +121,20 @@ public class CategoryRepository : ICategoryRepository
     }
     public async Task<Responses<Category>> CreateCategory(CreateCategoryVm categoryVm )
     {
-        var query = $"category_insert_proc @categoryName = {categoryVm.CategoryName.ToLower() } " +
-            $" , @Description = {categoryVm.Description}";
+        var query = $"exec insert_category_adv_proc @Name = '{categoryVm.CategoryName}' , " +
+            $" @Description = '{categoryVm.Description}' ";
 
         using (var connection = _dbDapper.CreateConnection())
         {
-            var result = connection.QueryAsync(query);
+            var result =await connection.QueryAsync(query);
         }
 
         return new Responses<Category>();
     }
-    public async Task<Responses<Category>> UpdateCategory( UpdateCategoryVm categoryVm )
+    public async Task<Responses<Category>> UpdateCategory(int id , UpdateCategoryVm categoryVm )
     {
-        var query = $"category_update_proc @categoryId = {categoryVm.Id} ," +
-            $" @categoryName = '{categoryVm.Name}', " +
+        var query = $"category_update_proc @categoryId = {id} ," +
+            $" @categoryName = '{categoryVm.CategoryName}', " +
             $" @description = '{categoryVm.Description}' ";
 
         using(var connection  = _dbDapper.CreateConnection())
