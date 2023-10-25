@@ -131,9 +131,9 @@ public class CategoryRepository : ICategoryRepository
 
         return new Responses<Category>();
     }
-    public async Task<Responses<Category>> UpdateCategory(int id , UpdateCategoryVm categoryVm )
+    public async Task<Responses<Category>> UpdateCategory( int id , UpdateCategoryVm categoryVm )
     {
-        var query = $"category_update_proc @categoryId = {id} ," +
+        var query = $"update_category_advanced @categoryId = {id} ," +
             $" @categoryName = '{categoryVm.CategoryName}', " +
             $" @description = '{categoryVm.Description}' ";
 

@@ -85,7 +85,7 @@ public class CategoryController : ControllerBase
         if (categoryVm.CategoryName == null && categoryVm.Description == null)
             return Ok();
 
-        var result = await _catService.UpdateCategory(id, categoryVm);
+        var result = await _catService.UpdateCategory( id , categoryVm);
         if (result.HasError)
             return NotFound();
 

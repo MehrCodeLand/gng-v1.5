@@ -9,10 +9,6 @@ namespace Services.Leyer.ViewModels.ViewModels.Category;
 
 public class UpdateCategoryVm
 {
-    [Required]
-    [MaxLength(100)]
-    [MinLength(2)]
-    public string CategoryName { get; set; }
-    [MaxLength(255)]
+    public string? CategoryName { get; set; }
     public string? Description { get; set; }
 }

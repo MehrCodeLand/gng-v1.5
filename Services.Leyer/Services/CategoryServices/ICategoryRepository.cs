@@ -11,5 +11,5 @@ public interface ICategoryRepository
     Task<Responses<Category>> GetAllCategory();
     Task<Responses<Category>> DeleteCategory(int id);
     Task<Responses<Category>> CreateCategory(CreateCategoryVm categoryVm);
-    Task<Responses<Category>> UpdateCategory( int id , UpdateCategoryVm categoryVm);
+    Task<Responses<Category>> UpdateCategory( int id, UpdateCategoryVm categoryVm);
 }   
